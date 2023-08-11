@@ -20,11 +20,15 @@ namespace Sorting.HeapSort
 
         protected void Sink(T[] a, int k)
         {
+            Sink(a, k, a.Length);
+        }
+        protected void Sink(T[] a, int k, int N)
+        {
             int j = k;
             j = j * 2;
-            while (j <= a.Length)
+            while (j <= N)
             {
-                if (j<a.Length && Less(a, j, j + 1)) j++;
+                if (j< N && Less(a, j, j + 1)) j++;
                 if (Less(a, j, j / 2)) break;
                 Swap(a, j, j / 2);
                 j *= 2;
