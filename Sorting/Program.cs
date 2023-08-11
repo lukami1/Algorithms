@@ -62,6 +62,59 @@ namespace Sorting
             Console.ReadLine();
         }
 
+        /*
+         
+         Nuts and bolts. (G. J. E. Rawlins) You have a mixed pile of N nuts and N bolts
+and need to quickly find the corresponding pairs of nuts and bolts. Each nut matches
+exactly one bolt, and each bolt matches exactly one nut. By fitting a nut and bolt to-
+gether, you can see which is bigger, but it is not possible to directly compare two nuts or
+two bolts. Give an efficient method for solving the problem
+         */
+
+
+        private void MatchNutAndBolt(int[] nuts, int[] bolts)
+        {
+        }
+
+        private void MatchNutAndBolt(int[] nuts, int[] bolts, int lo, int hi)
+        {
+            if (lo > hi) return;
+            var j = Partition(nuts, bolts[hi], lo, hi);
+            Partition(bolts, nuts[j], lo, hi);
+            MatchNutAndBolt(nuts, bolts, lo, j - 1);
+            MatchNutAndBolt(nuts, bolts, j + 1, hi);
+        }
+
+        private int Partition(int[] a, int key, int lo, int hi)
+        {
+            int i = lo + 1; int j = hi;
+            int v = key;
+            while (true)
+            {
+                while (a[i] < v)
+                {
+                    if (i >= hi)
+                        break;
+                    i++;
+                }
+                while (a[j] > v)
+                {
+                    if (j <= lo)
+                    {
+                        break;
+                    }
+                    i--;
+                }
+                if (i >= j) break;
+                var swap = a[i];
+                a[i] = a[j];
+                a[j] = swap;
+            }
+            var swap1 = a[lo];
+            a[lo] = a[j];
+            a[j] = swap1;
+            return j;
+        }
 
         /*
          Merging sorted queues. Develop a static method that takes two queues of sorted
@@ -85,9 +138,9 @@ sorted order.
                 }
                 else
                 {
-                    if(p>0)
-                        newQueue.Enqueue(p); 
-                    if(q > 0)
+                    if (p > 0)
+                        newQueue.Enqueue(p);
+                    if (q > 0)
                         newQueue.Enqueue(q);
                 }
             }
