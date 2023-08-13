@@ -23,9 +23,15 @@ namespace Searching.SymbolTables
             if(i<N && key.CompareTo(_keys[i]) == 0)
             {
                 _values[i] = value;
-
             }
-
+            for(int j = N; j>i; j--)
+            {
+                _keys[j] = _keys[j-1];
+                _values[j] = _values[j-1];
+            }
+            _keys[i]= key;
+            _values[i]= value;
+            N++;
         }
 
         public TKey Ceiling(TKey key)
@@ -104,7 +110,17 @@ namespace Searching.SymbolTables
 
         public int Rank(TKey key)
         {
-            throw new NotImplementedException();
+            int hi = N-1;
+            int lo = 0;
+            while (lo < hi)
+            {
+                int mid = lo + (hi - lo) / 2;
+                int c = key.CompareTo(_keys[mid]);
+                if (c < 0) { hi = mid - 1; }
+                else if (c > 0) { lo = mid + 1; }
+                else { return mid; }
+            }
+            return lo;
         }
 
         public TKey Select(int k)
