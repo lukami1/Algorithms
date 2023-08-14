@@ -65,12 +65,14 @@ namespace Searching.SymbolTables
                 _keys[j] = _keys[j+1];
                 _values[j] = _values[j+1];
             }
+            N--;
         }
 
         public void DeleteMax()
         {
             _keys[N - 1] = default;
             _values[N - 1] = default;
+            N--;
         }
 
         public void DeleteMin()
@@ -80,6 +82,7 @@ namespace Searching.SymbolTables
                 _keys[i] = _keys[i + 1];
                 _values[i] = _values[i + 1];
             }
+            N--;
         }
 
         public TKey Floor(TKey key)
