@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -20,28 +21,28 @@ namespace Searching.SymbolTables
         public void Add(TKey key, TValue value)
         {
             int i = Rank(key);
-            if(i<N && key.CompareTo(_keys[i]) == 0)
+            if (i < N && key.CompareTo(_keys[i]) == 0)
             {
                 _values[i] = value;
             }
-            for(int j = N; j>i; j--)
+            for (int j = N; j > i; j--)
             {
-                _keys[j] = _keys[j-1];
-                _values[j] = _values[j-1];
+                _keys[j] = _keys[j - 1];
+                _values[j] = _values[j - 1];
             }
-            _keys[i]= key;
-            _values[i]= value;
+            _keys[i] = key;
+            _values[i] = value;
             N++;
         }
 
         public TKey Ceiling(TKey key)
         {
-            throw new NotImplementedException();
+            return _keys[Rank(key)];
         }
 
         public bool Contains(TKey key)
         {
-            throw new NotImplementedException();
+            return _keys[Rank(key)] != null;
         }
 
         public int Count()
@@ -51,27 +52,39 @@ namespace Searching.SymbolTables
 
         public int Count(TKey lo, TKey hi)
         {
-            throw new NotImplementedException();
+            var hiRank = Rank(hi);
+            var loRank = Rank(lo);
+            return hiRank - loRank;
         }
 
         public void Delete(TKey key)
         {
-            throw new NotImplementedException();
+            int i = Rank(key);
+            for(int j = i; j < N-1; j++)
+            {
+                _keys[j] = _keys[j+1];
+                _values[j] = _values[j+1];
+            }
         }
 
         public void DeleteMax()
         {
-            throw new NotImplementedException();
+            _keys[N - 1] = default;
+            _values[N - 1] = default;
         }
 
         public void DeleteMin()
         {
-            throw new NotImplementedException();
+            for (int i = 0; i < N - 1; i++)
+            {
+                _keys[i] = _keys[i + 1];
+                _values[i] = _values[i + 1];
+            }
         }
 
         public TKey Floor(TKey key)
         {
-            throw new NotImplementedException();
+            return _keys[Rank(key)-1];
         }
 
         public TValue GetValue(TKey key)
@@ -90,12 +103,16 @@ namespace Searching.SymbolTables
 
         public IEnumerable<TKey> Keys(TKey lo, TKey hi)
         {
-            throw new NotImplementedException();
+            Queue<TKey> queue = new Queue<TKey>();
+            if(lo.CompareTo(hi)>0) return queue;
+            for(int i = Rank(lo); i< Rank(hi); i++) { queue.Enqueue(_keys[i]); }
+            if(Contains(hi)) queue.Enqueue(_keys[Rank(hi)]);
+            return queue;
         }
 
         public IEnumerable<TKey> Keys()
         {
-            throw new NotImplementedException();
+            return Keys(_keys[0], _keys[N - 1]);
         }
 
         public TKey Max()
@@ -110,9 +127,9 @@ namespace Searching.SymbolTables
 
         public int Rank(TKey key)
         {
-            int hi = N-1;
+            int hi = N - 1;
             int lo = 0;
-            while (lo < hi)
+            while (lo <= hi)
             {
                 int mid = lo + (hi - lo) / 2;
                 int c = key.CompareTo(_keys[mid]);
@@ -125,7 +142,7 @@ namespace Searching.SymbolTables
 
         public TKey Select(int k)
         {
-            throw new NotImplementedException();
+            return _keys[k];
         }
     }
 }
