@@ -7,6 +7,8 @@ using System.Security.Policy;
 using System.Diagnostics.Eventing.Reader;
 using System.Collections;
 using Fundamentals.UnionFind;
+using System.Collections.Concurrent;
+using System.Windows.Forms.VisualStyles;
 
 namespace Exercises
 {
@@ -102,7 +104,24 @@ namespace Exercises
             //};
 
             //    Console.WriteLine(LocalMinimumMatrix(arr));
+            var s = "aaba";
+            int[] charCounts = new int[26];
+            for (int i = 0; i < s.Length; i++)
+            {
+                charCounts[s[i] - 'a'] += 1;
+            }
 
+            var pq = new PriorityQueue<Tuple<char, int>, int>(Comparer<int>.Create((x, y) => y.CompareTo(x)));
+            for (int i = 0; i < 26; i++)
+            {
+                if (charCounts[i] > 0)
+                {
+                    pq.Enqueue(Tuple.Create((char)('a' + i), charCounts[i]), charCounts[i]);
+                }
+            }
+
+
+            int a = 'A' ;
             Console.ReadLine();
         }
 

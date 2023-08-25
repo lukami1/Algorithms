@@ -21,6 +21,7 @@ namespace Sorting.QuickSort
 
         private void Sort(T[] c, int lo, int hi)
         {
+            if (hi <= lo) return;
             int lt = lo; int i = lo + 1; int gt = hi;
             var v = c[lo];
             while (i <= gt)
